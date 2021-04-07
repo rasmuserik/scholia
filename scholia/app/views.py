@@ -2206,3 +2206,14 @@ def show_about():
 def show_favicon():
     """Detect and redirect for the favicon.ico."""
     return redirect(url_for('static', filename='favicon/favicon.ico'))
+
+@main.route('/dev/' + q_pattern)
+def show_dev(q):
+    entities = wb_get_entities([q])
+    name = entity_to_name(entities[q])
+    if name:
+        first_initial, last_name = name[0], name.split()[-1]
+    else:
+        first_initial, last_name = '', ''
+    return render_template('dev.html', q=q, first_initial=first_initial,
+                           last_name=last_name)

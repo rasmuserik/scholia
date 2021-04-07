@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% set aspect = "work" %}
+
+{% block in_ready %}
+{{ sparql_to_iframe('citation-graph') }}
+{% endblock %}
+
+{% block page_content %}
+
+{{ sparql_wikidata_query_gui('citation-graph') }}
+
+<h3 id="citation-graph-header" title="Partial citation graph around the work with the up to 40 most important works displayed">Citation graph</h3>
+
+<div class="embed-responsive embed-responsive-4by3">
+    <iframe class="embed-responsive-item" id="citation-graph-iframe"></iframe>
+</div>
+  
+{% endblock %}
+    

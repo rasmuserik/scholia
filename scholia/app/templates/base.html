@@ -16,6 +16,9 @@ sparqlToIframe(`# tool: scholia
 "#{{ panel }}-iframe", "{{ aspect }}_{{ panel }}.sparql");
 {%- endmacro %}
 
+{% macro sparql_wikidata_query_gui(id) -%}
+<script type="sparql/wikidata-query-gui">{% include aspect + '_' + id + '.sparql' %}</script>
+{%- endmacro %}
 
 {% block head %}
 {{super()}}
@@ -38,6 +41,11 @@ sparqlToIframe(`# tool: scholia
 
 <script type="text/javascript" src="{{ url_for('static', filename='jquery.dataTables.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='scholia.js') }}"></script>
+
+<!-- wikidata-query-gui bundle and custom loading code -->
+<script type="text/javascript" src="{{ url_for('static', filename='bundle.wdqg.vendor.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='bundle.wdqg.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='wdqg.js') }}"></script>
 
 
 
