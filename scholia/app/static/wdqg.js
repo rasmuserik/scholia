@@ -30,11 +30,18 @@
     );
   }
   async function sparqlElem({ elem, sparql }) {
+    sparql = sparql.trim();
     let newElem = document.createElement("div");
     replaceElem(elem, newElem);
     elem = newElem;
     elem.innerText = "executing query";
-    sparql = sparql.trim();
+
+    // experiment with sizing
+    Object.assign(elem.style, {
+      display: 'inline-block',
+      height: '300px',
+      width: '500px',
+    });
 
     let viewType = 'Table';
     let m = sparql.match(/#defaultView:[^a-zA-Z]*([a-zA-Z]*)(.*)/)
@@ -59,10 +66,7 @@
       );
       resultBrowser.setOptions(options);
       resultBrowser.setResult(sparqlApi.getResultRawData());
-
       resultBrowser.draw($(elem));
-
-      console.log(resultBrowser);
     } catch (e) {
       elem.innerText = "Error running sparql query:" + String(e);
       throw e;
