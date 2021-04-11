@@ -29,25 +29,29 @@
       })
     );
   }
-  /** Map "#defaultView:..." in sparql to wikibase query service class name */
-  function viewType(name) {
-    name = ({
-      Dimensions: "MultiDimension",
-      Map: "Coordinate",
-      ImageGrid: "Image",
-    })[name] || name;
-    return name + "ResultBrowser";
-  }
   async function sparqlElem({ elem, sparql }) {
     let newElem = document.createElement("div");
     replaceElem(elem, newElem);
     elem = newElem;
     elem.innerText = "executing query";
     sparql = sparql.trim();
+
+    let viewType = 'Table';
+    let m = sparql.match(/#defaultView:[^a-zA-Z]*([a-zA-Z]*)(.*)/)
+    if(m && m[1]) {
+      viewType = m[1];
+    }
+    viewType = (({
+      Dimensions: "MultiDimension",
+      Map: "Coordinate",
+      ImageGrid: "Image",
+    })[viewType] || viewType) + "ResultBrowser";
+
+
     try {
       let sparqlApi = await runSparql(sparql);
       let resultBrowser = new wikibase.queryService.ui
-        .resultBrowser[viewType("Graph")]();
+        .resultBrowser[viewType]();
       elem.innerHTML = "";
       resultBrowser.setSparqlApi(sparqlApi);
       var options = new wikibase.queryService.ui.resultBrowser.helper.Options(
