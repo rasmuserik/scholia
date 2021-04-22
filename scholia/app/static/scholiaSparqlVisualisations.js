@@ -8,16 +8,16 @@
   let visualisations = {
     BarChart: { type: "inline" },
     BubbleChart: { type: "inline" },
-    Dimensions: { type: "iframe", resultBrowser: "MultiDimension" },
+    Dimensions: { type: "inline", resultBrowser: "MultiDimension" },
     Graph: { type: "inline" },
-    ImageGrid: { type: "iframe", resultBrowser: "Image" },
+    ImageGrid: { type: "iframe", resultBrowser: "Image" }, // TODO styling
     LineChart: { type: "inline" },
-    Map: { type: "iframe", resultBrowser: "Coordinate" },
-    ScatterChart: { type: "iframe" },
-    Table: { type: "iframe" },
-    TimeLine: { type: "iframe" },
-    Tree: { type: "iframe" },
-    TreeMap: { type: "iframe" },
+    Map: { type: "inline", resultBrowser: "Coordinate" },
+    ScatterChart: { type: "inline" },
+    Table: { type: "inline" },
+    Timeline: { type: "iframe" }, // TODO: bug: "something is wrong with the timeline scale"
+    Tree: { type: "inline" },
+    TreeMap: { type: "inline" },
   };
 
   //
@@ -81,19 +81,27 @@
     }
   }
 
+
+async function sparqlToIframe(sparql, element, filename) {
+    await dependencies;
+let elem = document.querySelector(element);
+      sparqlElem({ elem, query: sparql});
+/*
+    $(element).attr('src', url);
+    $(element).parent().after(
+        '<span style="float:right; font-size:smaller"><a href="https://github.com/fnielsen/scholia/blob/master/scholia/app/templates/' + filename + '">' +
+            filename.replace("_", ": ") +
+            '</a></span>');
+*/
+};
+
+  window.sparqlToIframe = sparqlToIframe;
   //
   // Find and replace <script type=sparql/scholia-visualised>...
   //
   let dependencies = loadDependencies();
   async function main() {
     await dependencies;
-    for (const name in visualisations) {
-      visualisations[name].resultBrowser = wikibase.queryService.ui
-      .resultBrowser[
-        (visualisations[name].resultBrowser || name) + "ResultBrowser"
-      ];
-      visualisations[name].name = name;
-    }
 
     const elements = document.querySelectorAll(
       "script[type='sparql/scholia-visualised']",
@@ -181,6 +189,15 @@
     "wikidata-query-gui/wikibase/queryService/ui/resultBrowser/GraphResultBrowserNodeBrowser.js",
       "wikidata-query-gui/wikibase/queryService/ui/resultBrowser/PolestarResultBrowser.js"]) 
       await loadScript(script);
+
+
+    for (const name in visualisations) {
+      visualisations[name].resultBrowser = wikibase.queryService.ui
+      .resultBrowser[
+        (visualisations[name].resultBrowser || name) + "ResultBrowser"
+      ];
+      visualisations[name].name = name;
+    }
   }
 
 })();

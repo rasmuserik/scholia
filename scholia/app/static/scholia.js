@@ -209,6 +209,7 @@ function sparqlToDataTable2(sparql, element, filename, options={}) {
 
 
 
+/*
 function sparqlToIframe(sparql, element, filename) {
     url = "https://query.wikidata.org/embed.html#" + encodeURIComponent(sparql);
     $(element).attr('src', url);
@@ -217,4 +218,4 @@ function sparqlToIframe(sparql, element, filename) {
             filename.replace("_", ": ") +
             '</a></span>');
 };
- 
+*/
