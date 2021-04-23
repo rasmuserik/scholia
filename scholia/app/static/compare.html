@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8" />
+</head>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+  }
+  iframe {
+    display: inline-block;
+    border: none;
+    padding: 0;
+    margin: 0;
+    width: 49%;
+    height: 90vh;
+  }
+</style>
+<body>
+  <select id="select" onchange="changePath()"></select>
+  &nbsp; (Just a quick hack to compare local and production side-by-side)
+  <p>
+    <iframe id="frame1"></iframe>
+    <iframe id="frame2"></iframe>
+  </p>
+  <script>
+    // paths from https://github.com/nunogit/scholia-junit-selenium/blob/master/pages/pagetotest.csv 2021-04-23
+    const paths = [ "/author/Q97270", "/author/Q97270/missing",
+      "/author/Q583725", "/author/Q583725/missing", "/author/Q46826387",
+      "/author/Q46826387/missing", "/author/Q55004959",
+      "/author/Q55004959/missing", "/award/Q35637", "/award/Q35637/missing",
+      "/catalogue/Q42661788", "/chemical/Q2270", "/chemical-class/Q41581",
+      "/chemical-element/Q623", "/clinical-trial/", "/country/Q35",
+      "/country/Q668", "/country/Q668/topic/Q10737", "/disease/Q12156",
+      "/disease/Q41112", "/disease/Q84263196", "/event/", "/event-series/",
+      "/gene/Q18030793", "/location/Q668", "/location/Q5465",
+      "/location/Q583725", "/location/Q583725/missing",
+      "/organization/Q131626", "/organization/Q131626/missing",
+      "/organization/Q583725", "/organization/Q583725/missing", "/P577",
+      "/pathway/Q30225516", "/printer/", "/project/Q27990087", "/protein/",
+      "/publisher/Q127992", "/publisher/Q583725", "/sponsor/Q4314967",
+      "/sponsor/Q583725", "/series/Q924044", "/taxon/Q15978631",
+      "/taxon/Q82069695", "/topic/Q15", "/topic/Q15/missing", "/topic/Q30",
+      "/topic/Q30/missing", "/topic/Q52", "/topic/Q64", "/topic/Q64/missing",
+      "/topic/Q532", "/topic/Q668", "/topic/Q41112", "/topic/Q41112/missing",
+      "/topic/Q12156", "/topic/Q12156/missing", "/topic/Q12174",
+      "/topic/Q12174/missing", "/topic/Q29496", "/topic/Q29496/missing",
+      "/topic/Q111140", "/topic/Q111140/missing", "/topic/Q181600",
+      "/topic/Q181600/missing", "/topic/Q1492760", "/topic/Q1492760/missing",
+      "/topic/Q180556", "/topic/Q180556/missing", "/topic/Q583725",
+      "/topic/Q583725/missing", "/topic/Q18123741", "/topic/Q18123741/missing",
+      "/topic/Q81068910", "/topic/Q81068910/missing", "/topic/Q82069695",
+      "/topic/Q82069695/missing", "/topic/Q84263196",
+      "/topic/Q84263196/missing", "/use/Q5140318", "/venue/Q4775205",
+      "/work/Q21090025", "/organizations/Q1269766,Q193196"];
+    for (const path of paths) {
+      const elem = document.createElement("option");
+      elem.value = path;
+      elem.innerText = path;
+      select.appendChild(elem);
+    }
+
+    function changePath() {
+      location.hash = "#" + select.value;
+      frame1.src = "http://localhost:8100/" + select.value;
+      frame2.src = "https://scholia.toolforge.org/" + select.value;
+    }
+    select.value = location.hash.slice(1);
+    changePath();
+  </script>
+</body>
